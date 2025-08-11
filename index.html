@@ -33,6 +33,22 @@
                     opacity: 0.7;
                 }
             }
+            .btn-pulse {
+                animation: btnPulse 2s infinite;
+            }
+            @keyframes btnPulse {
+                0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+                70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+            }
+            .animate-letter-roll {
+                animation: letterRoll 0.5s ease-out;
+            }
+            @keyframes letterRoll {
+                0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+                70% { transform: scale(1.2) rotate(5deg); opacity: 0.8; }
+                100% { transform: scale(1) rotate(0); opacity: 1; }
+            }
         }
     </style>
     <script>
@@ -52,7 +68,7 @@
     </script>
 </head>
 <body class="min-h-screen">
-    <!-- 断网提示层（禁止访问时显示） -->
+    <!-- 断网提示层 -->
     <div id="networkError" class="fixed inset-0 bg-gray-900/95 z-50 flex items-center justify-center hidden">
         <div class="text-center p-8 bg-white rounded-xl shadow-2xl max-w-md">
             <h2 class="text-3xl font-bold text-red-600 mb-4">无法连接服务器</h2>
@@ -61,9 +77,9 @@
         </div>
     </div>
 
-    <!-- 正常页面内容 -->
+    <!-- 动态背景层 -->
     <div class="dynamic-layer fixed inset-0 z-10 pointer-events-none opacity-20">
-        <div class="dynamic-item absolute inset-0 bg-[url('https://p2.ssl.qhimgs1.com/t049c545a18debeb67f.png')] bg-cover bg-center animate-scroll-up"></div>
+        <div class="dynamic-item absolute inset-0 bg-[url('https://p2.ssl.qhimgs1.com/t049c545a18debeb67f.png')] bg-cover bg-center"></div>
     </div>
     <div class="dynamic-layer fixed inset-0 z-20 pointer-events-none">
         <div class="absolute inset-0 flex items-center justify-center overflow-hidden z-30">
@@ -77,9 +93,12 @@
             </div>
         </div>
     </div>
+    
+    <!-- 主内容区 -->
     <div class="container mx-auto px-4 py-8 max-w-6xl">
         <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-primary mb-6 tracking-tight text-center">抽签开始打工！</h1>
         <div class="flex flex-col lg:flex-row gap-8">
+            <!-- 抽签记录 -->
             <div class="lg:w-1/4 order-1">
                 <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg h-full p-6 sticky top-8">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
@@ -88,6 +107,8 @@
                     <div id="records" class="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto"></div>
                 </div>
             </div>
+            
+            <!-- 抽签控制区 -->
             <div class="lg:w-1/2 order-2">
                 <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 transform transition-all duration-300 hover:shadow-xl">
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -95,28 +116,28 @@
                             <label class="block text-gray-700 font-medium mb-2">
                                 抽签人数:
                                 <input type="number" id="peopleCount" min="1" value="" placeholder="请输入人数"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:animate-[btnPulse_2s_infinite]">
+                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
                             </label>
                         </div>
                         <div class="md:col-span-1">
                             <label class="block text-gray-700 font-medium mb-2">
                                 抽签次数:
                                 <input type="number" id="drawCount" min="1" value="" placeholder="请输入次数"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:animate-[btnPulse_2s_infinite]">
+                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
                             </label>
                         </div>
                         <div class="md:col-span-1">
                             <label class="block text-gray-700 font-medium mb-2">
                                 滚动时间(秒):
                                 <input type="number" id="rollTime" min="0.5" step="0.5" value="2" placeholder="滚动时间"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:animate-[btnPulse_2s_infinite]">
+                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
                             </label>
                         </div>
                         <div class="md:col-span-1">
                             <label class="block text-gray-700 font-medium mb-2">
                                 字母抽签范围(A-Z):
                                 <input type="text" id="letterRange" placeholder="例如: A B C D E"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all uppercase hover:animate-[btnPulse_2s_infinite]">
+                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all uppercase hover:btn-pulse">
                             </label>
                         </div>
                     </div>
@@ -128,21 +149,23 @@
                         </label>
                     </div>
                 </div>
+                
                 <div class="mt-4 flex justify-center w-full flex-col items-center">
                     <button id="drawBtn" 
-                        class="w-full px-8 py-6 md:px-10 md:py-8 bg-primary text-white rounded-lg shadow-lg transform transition-all duration-300 hover:bg-primary/90 active:scale-120 disabled:opacity-100 disabled:cursor-not-allowed text-3xl md:text-4xl"
+                        class="w-full px-8 py-6 md:px-10 md:py-8 bg-primary text-white rounded-lg shadow-lg transform transition-all duration-300 hover:bg-primary/90 active:scale-120 disabled:opacity-50 disabled:cursor-not-allowed text-3xl md:text-4xl"
                         disabled
                         title="点击按钮或按回车键开始抽签">
                         开始抽签
                     </button>
                     <p class="text-xs md:text-sm text-gray-500 mt-2 text-center max-w-xs">
-                        提示：回车键或点击按钮均可启动抽签
+                        提示：输入人数和次数后按钮将启用
                     </p>
                     <div id="currentResult" 
                         class="mt-4 text-2xl md:text-3xl font-bold text-primary text-center hidden 
                               opacity-0 transition-all duration-500">
                     </div>
                 </div>
+                
                 <div id="result"
                     class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
                           text-[clamp(3rem,15vw,10rem)] font-bold text-primary 
@@ -150,7 +173,8 @@
                 </div>
             </div>
          
-        <div class="lg:w-1/4 order-3">
+            <!-- 字母抽签记录 -->
+            <div class="lg:w-1/4 order-3">
                 <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg h-full p-6 sticky top-8">
                     <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
                         <i class="fa fa-list mr-2 text-secondary"></i> 字母抽签记录
@@ -160,6 +184,8 @@
                 </div>
             </div>
         </div>
+        
+        <!-- 结束页面 -->
         <div id="endMessage"
             class="fixed inset-0 bg-white/90 flex items-center justify-center z-50 transform transition-all duration-500 opacity-0 pointer-events-none">
             <div class="text-center">
@@ -172,37 +198,75 @@
             </div>
         </div>
     </div>
+    
     <script>
-        // 访问控制标记：0=允许访问（初始值，会被localStorage覆盖）；1=禁止访问
-        let ACCESS_CONTROL = 0;  
-        const STORAGE_KEY = 'drawAccessControl'; // 存储访问状态的键
-        const DATE_KEY = 'lastDrawDate'; // 存储最后一次使用日期的键
+        // 核心配置
+        const STORAGE_KEY = 'drawUsageCount'; // 使用次数存储键
+        const DATE_KEY = 'lastDrawDate'; // 日期存储键
+        const END_PAGE_MARKER = 'endPageActive'; // 结束页面标记
+        const MAX_USAGE_PER_DAY = 3; // 每日最大使用次数
         
-        // 获取当前日期（格式：YYYY-MM-DD）
+        // 特定轮次抽签设置
+        const MUST_DRAW_SETTINGS = [
+            { round: 1, number: 8 },
+            { round: 2, number: 1 },
+            { round: 3, number: 4 }, 
+            { round: 4, number: 2 },
+            { round: 5, number: 3 },
+            { round: 6, number: 7 }, 
+            { round: 7, number: 9 }, 
+            { round: 8, number: 10 },
+            { round: 9, number: 6 }, 
+            { round: 10, number: 5 }
+        ];
+        
+        // 获取当前日期（YYYY-MM-DD）
         function getCurrentDate() {
             const date = new Date();
             return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         }
         
-        // 从localStorage加载状态（核心：强制覆盖初始值）
+        // 从存储加载使用状态（修复计数核心逻辑）
         function loadAccessState() {
-            const savedState = localStorage.getItem(STORAGE_KEY); // 读取保存的状态（1=已使用）
-            const savedDate = localStorage.getItem(DATE_KEY); // 读取保存的日期
             const currentDate = getCurrentDate();
+            const savedDate = localStorage.getItem(DATE_KEY);
+            let savedCount = localStorage.getItem(STORAGE_KEY);
             
-            // 关键逻辑：只要当天有使用记录（无论初始值是0还是1），强制设为禁止访问
-            if (savedDate === currentDate && savedState === '1') {
-                ACCESS_CONTROL = 1; // 本地存储有当天记录，强制禁止
+            // 1. 处理日期变更（跨天重置计数）
+            if (savedDate !== currentDate) {
+                localStorage.setItem(STORAGE_KEY, '0');
+                localStorage.setItem(DATE_KEY, currentDate);
+                savedCount = '0';
             }
+            
+            // 2. 处理从结束页面刷新的情况（关键修复点）
+            const wasOnEndPage = localStorage.getItem(END_PAGE_MARKER) === 'true';
+            if (wasOnEndPage) {
+                // 直接从存储读取并累加，避免内存值与存储值不同步
+                const currentCount = parseInt(savedCount || '0');
+                const newCount = currentCount + 1;
+                localStorage.setItem(STORAGE_KEY, newCount.toString());
+                savedCount = newCount.toString(); // 更新当前计数
+                localStorage.removeItem(END_PAGE_MARKER); // 清除标记
+            }
+            
+            // 3. 返回当前有效计数
+            return parseInt(savedCount || '0');
         }
         
-        // 保存状态到localStorage（标记当天已使用）
-        function saveAccessStateAsUsed() {
-            localStorage.setItem(STORAGE_KEY, '1'); // 标记为已使用
-            localStorage.setItem(DATE_KEY, getCurrentDate()); // 记录当天日期
-            ACCESS_CONTROL = 1; // 同步更新内存中的状态
+        // 增加使用次数（直接操作存储，确保准确性）
+        function incrementUsageCount() {
+            const currentDate = getCurrentDate();
+            const savedCount = localStorage.getItem(STORAGE_KEY) || '0';
+            const newCount = parseInt(savedCount) + 1;
+            
+            localStorage.setItem(STORAGE_KEY, newCount.toString());
+            localStorage.setItem(DATE_KEY, currentDate);
+            
+            return newCount;
         }
 
+        // DOM元素
         const peopleCountInput = document.getElementById('peopleCount');
         const drawCountInput = document.getElementById('drawCount');
         const rollTimeInput = document.getElementById('rollTime');
@@ -219,6 +283,7 @@
         const networkErrorDiv = document.getElementById('networkError');
         const mainContent = document.querySelector('.container');
         
+        // 状态变量
         let remainingPeople = [];
         let currentRound = 1;
         let totalRounds = 1;
@@ -227,17 +292,18 @@
         let rollStartTime;
         let rollDuration;
         let drawnLetters = [];
+        let hasReachedEnd = false;
+        let usageCount = 0; // 初始化为0，页面加载时会更新
+        let isPageLoaded = false;
 
-        // 检查访问权限（根据加载后的ACCESS_CONTROL判断）
+        // 检查访问权限
         function checkAccess() {
-            if (ACCESS_CONTROL === 1) {
-                // 禁止访问：显示断网界面，隐藏抽签内容
+            if (usageCount >= MAX_USAGE_PER_DAY) {
                 networkErrorDiv.classList.remove('hidden');
                 mainContent.style.display = 'none';
                 document.querySelectorAll('.dynamic-layer').forEach(layer => layer.style.display = 'none');
                 return false;
             } else {
-                // 允许访问：显示抽签内容，隐藏断网界面
                 networkErrorDiv.classList.add('hidden');
                 mainContent.style.display = 'block';
                 document.querySelectorAll('.dynamic-layer').forEach(layer => layer.style.display = 'block');
@@ -245,7 +311,23 @@
             }
         }
 
-        // 字母输入处理（去重+大写）
+        // 显示提示信息
+        function showToast(message) {
+            let toast = document.getElementById('toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'toast';
+                toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 opacity-0 transition-opacity duration-300';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = message;
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        // 字母输入处理
         letterRangeInput.addEventListener('input', function(e) {
             this.value = this.value.toUpperCase();
             let uniqueLetters = [];
@@ -256,40 +338,59 @@
             this.value = uniqueLetters.join(' ');
         });
 
-        // 初始化抽签（首次使用时清除旧记录，确保本次可用）
+        // 更新按钮状态
+        function updateDrawButtonState() {
+            const peopleCount = parseInt(peopleCountInput.value);
+            const drawCount = parseInt(drawCountInput.value);
+            
+            if (!isNaN(peopleCount) && peopleCount >= 1 && 
+                !isNaN(drawCount) && drawCount >= 1) {
+                drawBtn.disabled = false;
+                drawBtn.classList.add('btn-pulse');
+                return true;
+            } else {
+                drawBtn.disabled = true;
+                drawBtn.classList.remove('btn-pulse');
+                return false;
+            }
+        }
+
+        // 监听输入变化
+        peopleCountInput.addEventListener('input', updateDrawButtonState);
+        drawCountInput.addEventListener('input', updateDrawButtonState);
+
+        // 初始化抽签
         function initDraw() {
-            // 清除可能的旧记录（仅在首次初始化时执行，允许本次使用）
-            localStorage.removeItem(STORAGE_KEY);
-            localStorage.removeItem(DATE_KEY);
+            if (!updateDrawButtonState()) {
+                return;
+            }
             
             const peopleCount = parseInt(peopleCountInput.value);
             const rounds = parseInt(drawCountInput.value);
-            rollDuration = parseFloat(rollTimeInput.value) * 1000 || 2000;
-            if (isNaN(peopleCount) || peopleCount < 1) {
-                showToast('请输入有效的抽签人数');
-                return;
-            }
-            if (isNaN(rounds) || rounds < 1) {
-                showToast('请输入有效的抽签次数');
-                return;
-            }
+            rollDuration = (parseFloat(rollTimeInput.value) || 2) * 1000;
+            
             totalRounds = Math.min(rounds, peopleCount);
             currentRound = 1;
             remainingPeople = Array.from({ length: peopleCount }, (_, i) => i + 1);
             recordsDiv.innerHTML = '';
             letterRecordsDiv.innerHTML = '';
             endMessageDiv.classList.add('opacity-0', 'pointer-events-none');
-            drawBtn.disabled = false;
             drawBtn.textContent = '开始抽签';
-            drawBtn.classList.add('btn-pulse');
-            drawBtn.onclick = performDraw;
-            showToast(`已准备好 ${peopleCount} 人，共 ${rounds} 次抽签`);
             drawnLetters = [];
+            hasReachedEnd = false;
+            localStorage.removeItem(END_PAGE_MARKER);
+            
+            showToast(`已准备好 ${peopleCount} 人，共 ${rounds} 次抽签`);
         }
 
         // 执行抽签
         function performDraw() {
             if (isDrawing) return;
+            
+            if (currentRound === 1) {
+                initDraw();
+            }
+            
             isDrawing = true;
             drawBtn.disabled = true;
             drawBtn.classList.remove('btn-pulse');
@@ -298,212 +399,184 @@
             startRolling();
         }
 
-        // 开始滚动数字/字母
+        // 开始滚动数字
         function startRolling() {
             rollStartTime = Date.now();
+            if (rollInterval) clearInterval(rollInterval);
+            
             rollInterval = setInterval(() => {
                 const elapsed = Date.now() - rollStartTime;
                 const progress = Math.min(elapsed / rollDuration, 1);
-                const speedFactor = 1 - (progress * 0.9); 
+                
+                if (letterSwitch.checked && getValidLetters().length > 0) {
+                    const randomLetter = getRandomLetter(getValidLetters());
+                    resultDiv.textContent = randomLetter;
+                    rollingNumber.textContent = randomLetter;
+                } else {
+                    const mustDrawConfig = MUST_DRAW_SETTINGS.find(setting => setting.round === currentRound);
+                    let randomNumber;
+                    
+                    if (mustDrawConfig && remainingPeople.includes(mustDrawConfig.number)) {
+                        randomNumber = progress > 0.8 ? mustDrawConfig.number : 
+                                      remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+                    } else {
+                        randomNumber = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+                    }
+                    
+                    resultDiv.textContent = randomNumber;
+                    rollingNumber.textContent = randomNumber;
+                }
+                
                 if (elapsed >= rollDuration) {
                     clearInterval(rollInterval);
                     finalizeDraw();
-                } else if (elapsed % Math.max(60, 100 * speedFactor) < 50) { 
-                    if (letterSwitch.checked && getValidLetters().length > 0) {
-                        const randomLetter = getRandomLetter(getValidLetters());
-                        resultDiv.textContent = randomLetter;
-                        rollingNumber.textContent = randomLetter;
-                    } else {
-                        const randomIndex = Math.floor(Math.random() * remainingPeople.length);
-                        const randomNumber = remainingPeople[randomIndex];
-                        resultDiv.textContent = randomNumber;
-                        rollingNumber.textContent = randomNumber;
-                    }
                 }
-            }, 20); 
+            }, 30);
         }
 
-        // 获取有效字母范围
+        // 获取有效字母
         function getValidLetters() {
             return letterRangeInput.value.split(' ').filter(c => c >= 'A' && c <= 'Z');
         }
 
-        // 随机抽取字母
+        // 随机字母
         function getRandomLetter(validLetters) {
             return validLetters.length > 0 ? validLetters[Math.floor(Math.random() * validLetters.length)] : '';
         }
 
-        // 完成抽签并记录结果
+        // 完成抽签
         function finalizeDraw() {
-            resultDiv.classList.remove('animate-roll');
+            resultDiv.classList.remove('animate-letter-roll');
             if (remainingPeople.length === 0 || currentRound > totalRounds) {
                 endDraw();
                 return;
             }
+            
             const validLetters = getValidLetters();
             if (letterSwitch.checked && validLetters.length > 0) {
                 const availableLetters = validLetters.filter(c => !drawnLetters.includes(c));
                 
                 if (availableLetters.length === 0) {
                     letterSwitch.checked = false;
-                    showToast('所有字母已抽取完毕');
-                    
-                    const selectedIndex = Math.floor(Math.random() * remainingPeople.length);
-                    const selectedPerson = remainingPeople[selectedIndex];
-                    remainingPeople.splice(selectedIndex, 1);
-                    
-                    resultDiv.textContent = selectedPerson;
-                    rollingNumber.textContent = selectedPerson;
-                    const recordItem = document.createElement('div');
-                    recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
-                    recordItem.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <div class="font-medium text-primary">第 ${currentRound} 轮</div>
-                            <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
-                        </div>
-                        <div class="text-2xl font-bold text-primary mt-1">${selectedPerson}号</div>
-                    `;
-                    recordsDiv.prepend(recordItem);
-                    currentRound++;
+                    showToast('所有字母已抽取完毕，切换至数字抽签');
+                    processNumberDraw();
                 } else {
                     const drawnLetter = getRandomLetter(availableLetters);
                     drawnLetters.push(drawnLetter);
-                    
                     resultDiv.textContent = drawnLetter;
                     rollingNumber.textContent = drawnLetter;
-                    const recordItem = document.createElement('div');
-                    recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
-                    recordItem.innerHTML = `
-                        <div class="flex justify-between items-center">
-                            <div class="font-medium text-secondary">字母抽签</div>
-                            <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
-                        </div>
-                        <div class="text-2xl font-bold text-secondary mt-1">${drawnLetter}</div>
-                    `;
-                    letterRecordsDiv.prepend(recordItem);
+                    addLetterRecord(drawnLetter);
+                    currentRound++;
                 }
             } else {
-                const MUST_DRAW_SETTINGS = [
-                    { round: 1, number: 8 },
-                    { round: 2, number: 1 },
-                    { round: 3, number: 4 }, 
-                    { round: 4, number: 2 },
-                    { round: 5, number: 3 },
-                    { round: 6, number: 7 }, 
-                    { round: 7, number: 9 }, 
-                    { round: 8, number: 10 },
-                    { round: 9, number: 6 }, 
-                    { round: 10, number: 5 }
-                ];
-                const mustDrawConfig = MUST_DRAW_SETTINGS.find(setting => setting.round === currentRound);
-                let selectedPerson;
-                if (mustDrawConfig) {
-                    selectedPerson = mustDrawConfig.number;
-                    const index = remainingPeople.indexOf(selectedPerson);
-                    if (index > -1) remainingPeople.splice(index, 1);
-                    else selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
-                } else {
-                    selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
-                }
-                if (!mustDrawConfig || remainingPeople.includes(selectedPerson)) {
-                    const selectedIndex = remainingPeople.indexOf(selectedPerson);
-                    if (selectedIndex > -1) remainingPeople.splice(selectedIndex, 1);
-                }
-                resultDiv.textContent = selectedPerson;
-                rollingNumber.textContent = selectedPerson;
-                const recordItem = document.createElement('div');
-                recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
-                recordItem.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="font-medium text-primary">第 ${currentRound} 轮</div>
-                        <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
-                    </div>
-                    <div class="text-2xl font-bold text-primary mt-1">${selectedPerson}号</div>
-                `;
-                recordsDiv.prepend(recordItem);
-                currentRound++;
+                processNumberDraw();
             }
-            if (remainingPeople.length === 0 || currentRound > totalRounds) {
-                setTimeout(endDraw, 1000);
+            
+            isDrawing = false;
+            if (currentRound <= totalRounds) {
+                drawBtn.disabled = false;
+                drawBtn.classList.add('btn-pulse');
+                drawBtn.textContent = `下一轮 (${currentRound}/${totalRounds})`;
             } else {
-                setTimeout(() => {
-                    drawBtn.disabled = false;
-                    drawBtn.textContent = `下一轮抽签 (剩余 ${totalRounds - currentRound + 1} 次)`;
-                    drawBtn.classList.add('btn-pulse');
-                    isDrawing = false;
-                }, 1000);
+                endDraw();
             }
         }
 
-        // 结束抽签（标记为已使用）
+        // 处理数字抽签
+        function processNumberDraw() {
+            const mustDrawConfig = MUST_DRAW_SETTINGS.find(setting => setting.round === currentRound);
+            let selectedPerson;
+            
+            if (mustDrawConfig && remainingPeople.includes(mustDrawConfig.number)) {
+                selectedPerson = mustDrawConfig.number;
+            } else {
+                selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+            }
+            
+            const selectedIndex = remainingPeople.indexOf(selectedPerson);
+            if (selectedIndex > -1) {
+                remainingPeople.splice(selectedIndex, 1);
+            }
+            
+            resultDiv.textContent = selectedPerson;
+            rollingNumber.textContent = selectedPerson;
+            addNumberRecord(selectedPerson);
+            currentRound++;
+        }
+
+        // 添加数字记录
+        function addNumberRecord(number) {
+            const recordItem = document.createElement('div');
+            recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
+            recordItem.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <div class="font-medium text-primary">第 ${currentRound} 轮</div>
+                    <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
+                </div>
+                <div class="text-2xl font-bold text-primary mt-1">${number}号</div>
+            `;
+            recordsDiv.prepend(recordItem);
+        }
+
+        // 添加字母记录
+        function addLetterRecord(letter) {
+            const recordItem = document.createElement('div');
+            recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
+            recordItem.innerHTML = `
+                <div class="flex justify-between items-center">
+                    <div class="font-medium text-secondary">第 ${currentRound} 轮</div>
+                    <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
+                </div>
+                <div class="text-2xl font-bold text-secondary mt-1">${letter}</div>
+            `;
+            letterRecordsDiv.prepend(recordItem);
+        }
+
+        // 结束抽签
         function endDraw() {
             numberDisplay.classList.add('hidden');
             setTimeout(() => {
                 endMessageDiv.classList.remove('opacity-0', 'pointer-events-none');
                 endMessageDiv.classList.add('opacity-100');
-                // 点击"重新开始"时，立即标记为已使用
-                drawBtn.onclick = saveAccessStateAsUsed;
+                hasReachedEnd = true;
+                // 设置结束页面标记（关键：无论之前状态如何，强制设置为true）
+                localStorage.setItem(END_PAGE_MARKER, 'true');
                 isDrawing = false;
             }, 500);
         }
 
-        // 显示提示消息
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-lg shadow-lg z-50 opacity-0 transition-all duration-300';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.classList.add('opacity-100'), 100);
-            setTimeout(() => {
-                toast.classList.remove('opacity-100');
-                setTimeout(() => document.body.removeChild(toast), 300);
-            }, 3000);
-        }
-
-        // 初始化检查输入
-        function initCheck() {
-            const peopleCount = parseInt(peopleCountInput.value) || 0;
-            const rounds = parseInt(drawCountInput.value) || 0;
-            const rollTime = parseFloat(rollTimeInput.value) || 0;
-            if (peopleCount > 0 && rounds > 0 && rollTime >= 0.5) {
-                drawBtn.disabled = false;
-                drawBtn.textContent = '开始抽签';
-                drawBtn.classList.add('btn-pulse');
-                drawBtn.onclick = initDraw;
-            } else {
-                drawBtn.disabled = true;
-                drawBtn.classList.remove('btn-pulse');
+        // 重新开始
+        function handleRestart() {
+            if (hasReachedEnd) {
+                // 直接操作存储增加计数，确保准确性
+                incrementUsageCount();
+                localStorage.removeItem(END_PAGE_MARKER);
             }
+            window.location.reload();
         }
 
-        // 页面加载时初始化（核心流程）
-        window.addEventListener('DOMContentLoaded', () => {
-            loadAccessState(); // 第一步：加载本地存储状态（强制覆盖初始值）
-            checkAccess(); // 第二步：根据加载后的状态判断是否允许访问
-            
-            // 只有允许访问时，才初始化抽签功能
-            if (ACCESS_CONTROL === 0) {
-                initCheck();
-                peopleCountInput.addEventListener('input', initCheck);
-                drawCountInput.addEventListener('input', initCheck);
-                rollTimeInput.addEventListener('input', initCheck);
-                
-                // 回车键触发抽签
-                document.addEventListener('keydown', (event) => {
-                    if (event.key === 'Enter' && !drawBtn.disabled) {
-                        event.preventDefault();
-                        drawBtn.click();
-                    }
-                });
-                
-                // "重新开始"按钮点击时，立即标记为已使用
-                restartBtn.addEventListener('click', saveAccessStateAsUsed);
+        // 键盘事件
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !drawBtn.disabled && !isDrawing) {
+                performDraw();
             }
         });
 
-        // 初始状态设置
-        endMessageDiv.classList.add('opacity-0', 'pointer-events-none');
-        drawBtn.disabled = true;
+        // 页面加载初始化
+        window.addEventListener('load', function() {
+            if (!isPageLoaded) {
+                isPageLoaded = true;
+                // 从存储加载计数（修复核心：使用返回值更新内存计数）
+                usageCount = loadAccessState();
+                checkAccess();
+                
+                if (usageCount < MAX_USAGE_PER_DAY) {
+                    drawBtn.addEventListener('click', performDraw);
+                    restartBtn.addEventListener('click', handleRestart);
+                    updateDrawButtonState();
+                }
+            }
+        });
     </script>
 </body>
 </html>
