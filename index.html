@@ -153,7 +153,7 @@
                         开始抽签
                     </button>
                     <p class="text-xs md:text-sm text-gray-500 mt-2 text-center max-w-xs">
-                        提示：输入人数和次数后按钮将启用
+                        提示：回车键或点击按钮均可启动抽签
                     </p>
                     <div id="currentResult" 
                         class="mt-4 text-2xl md:text-3xl font-bold text-primary text-center hidden 
@@ -447,7 +447,7 @@
             if (currentRound <= totalRounds) {
                 drawBtn.disabled = false;
                 drawBtn.classList.add('btn-pulse');
-                drawBtn.textContent = `下一轮 (${currentRound}/${totalRounds})`;
+                drawBtn.textContent = `下一轮抽签 (剩余 ${totalRounds - currentRound + 1} 次)`;
             } else {
                 endDraw();
             }
