@@ -3,9 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>抽签开始打工！</title>
+    <meta name="description" content="现代化抽签工具 - 公平、有趣、高效">
+    <title>✨ 幸运抽签 | Lucky Draw</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        secondary: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)' },
+                            '100%': { boxShadow: '0 0 40px rgba(16, 185, 129, 0.8), 0 0 60px rgba(16, 185, 129, 0.4)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
     <style type="text/tailwindcss">
         @layer utilities {
             .animate-number-zoom {
@@ -37,176 +96,306 @@
                 animation: btnPulse 2s infinite;
             }
             @keyframes btnPulse {
-                0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
-                70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
-                100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+                0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+                70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
             }
             .animate-letter-roll {
-                animation: letterRoll 0.5s ease-out;
+                animation: letterRoll 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             }
             @keyframes letterRoll {
-                0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
-                70% { transform: scale(1.2) rotate(5deg); opacity: 0.8; }
+                0% { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+                50% { transform: scale(1.3) rotate(10deg); opacity: 0.9; }
                 100% { transform: scale(1) rotate(0); opacity: 1; }
+            }
+            .glass-card {
+                background: rgba(255, 255, 255, 0.50);
+                backdrop-filter: blur(4px);
+                -webkit-backdrop-filter: blur(4px);
+                border: 1px solid rgba(255, 255, 255, 0.55);
+            }
+            .glass-card-dark {
+                background: rgba(17, 24, 39, 0.8);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .gradient-text {
+                background: linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .shimmer {
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+                background-size: 200% 100%;
+                animation: shimmer 2s infinite;
+            }
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+            .record-item {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .record-item:hover {
+                transform: translateX(8px) scale(1.02);
+                box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
             }
         }
     </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#4CAF50',
-                        secondary: '#ff5722',
-                    },
-                    fontFamily: {
-                        sans: ['Microsoft YaHei', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
 </head>
-<body class="min-h-screen">
-    <div id="networkError" class="fixed inset-0 bg-gray-900/95 z-50 flex items-center justify-center hidden">
-        <div class="text-center p-8 bg-white rounded-xl shadow-2xl max-w-md">
-            <h2 class="text-3xl font-bold text-red-600 mb-4">无法连接服务器</h2>
-            <p class="text-gray-700 mb-6">请检查您的网络连接后重试</p>
-            <p class="text-gray-500 text-sm">ERR_CONNECTION_REFUSED</p>
+<body class="min-h-screen font-sans bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <!-- 背景图片层 - 保留用户原有的图片，完全原样显示 -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-[url('https://p2.ssl.qhimgs1.com/t049c545a18debeb67f.png')] bg-cover bg-center"></div>
+    </div>
+
+    <!-- 网络错误提示 -->
+    <div id="networkError" class="fixed inset-0 bg-gray-900/95 z-50 flex items-center justify-center hidden backdrop-blur-sm">
+        <div class="text-center p-10 glass-card-dark rounded-3xl shadow-2xl max-w-md mx-4 transform scale-100 transition-transform">
+            <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="fa-solid fa-wifi-slash text-4xl text-red-500"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-3">无法连接服务器</h2>
+            <p class="text-gray-300 mb-2">请检查您的网络连接后重试</p>
+            <p class="text-gray-500 text-sm font-mono">ERR_CONNECTION_REFUSED</p>
         </div>
     </div>
 
-    <div class="dynamic-layer fixed inset-0 z-10 pointer-events-none opacity-20">
-        <div class="dynamic-item absolute inset-0 bg-[url('https://p2.ssl.qhimgs1.com/t049c545a18debeb67f.png')] bg-cover bg-center"></div>
-    </div>
-    <div class="dynamic-layer fixed inset-0 z-20 pointer-events-none">
-        <div class="absolute inset-0 flex items-center justify-center overflow-hidden z-30">
-            <div class="number-display text-[clamp(12rem,24vw,36rem)] font-bold 
-                       animate-number-zoom opacity-50
-                       bg-gradient-to-r from-yellow-400 to-orange-500 
+    <!-- 滚动数字显示层 - 置顶显示 -->
+    <div class="dynamic-layer fixed inset-0 z-[9999] pointer-events-none">
+        <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+            <div class="number-display text-[clamp(10rem,20vw,30rem)] font-black 
+                       animate-number-zoom opacity-60
+                       bg-gradient-to-r from-primary-400 via-accent-500 to-secondary-400
                        text-transparent bg-clip-text
-                       drop-shadow-lg hidden
-                       max-w-[80vw] max-h-[80vh]">
+                       drop-shadow-2xl hidden select-none"
+                 style="filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.5));">
                 <span id="rollingNumber" class="inline-block">0</span>
             </div>
         </div>
     </div>
-    
-    <div class="container mx-auto px-4 py-8 max-w-6xl">
-        <h1 class="text-[clamp(2rem,5vw,3rem)] font-bold text-primary mb-6 tracking-tight text-center">抽签开始打工！</h1>
-        <div class="flex flex-col lg:flex-row gap-8">
-            <div class="lg:w-1/4 order-1">
-                <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg h-full p-6 sticky top-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
-                        <i class="fa fa-history mr-2 text-primary"></i> 抽签记录
-                    </h2>
-                    <div id="records" class="space-y-3 max-h-[calc(100vh-300px)] overflow-y-auto"></div>
-                </div>
+
+    <!-- 主内容区 -->
+    <div class="relative z-20 container mx-auto px-4 py-6 max-w-7xl">
+        <!-- 标题区 -->
+        <header class="text-center mb-8">
+            <div class="inline-flex items-center justify-center p-2 bg-white/60 backdrop-blur rounded-2xl shadow-lg mb-4">
+                <span class="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl text-sm font-semibold shadow-lg">
+                    <i class="fa-solid fa-sparkles mr-2"></i>幸运抽签
+                </span>
             </div>
-            
-            <div class="lg:w-1/2 order-2">
-                <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg p-6 mb-8 transform transition-all duration-300 hover:shadow-xl">
-                    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                        <div class="md:col-span-1">
-                            <label class="block text-gray-700 font-medium mb-2">
-                                抽签人数:
-                                <input type="number" id="peopleCount" min="1" value="" placeholder="请输入人数"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
-                            </label>
-                        </div>
-                        <div class="md:col-span-1">
-                            <label class="block text-gray-700 font-medium mb-2">
-                                抽签次数:
-                                <input type="number" id="drawCount" min="1" value="" placeholder="请输入次数"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
-                            </label>
-                        </div>
-                        <div class="md:col-span-1">
-                            <label class="block text-gray-700 font-medium mb-2">
-                                滚动时间(秒):
-                                <input type="number" id="rollTime" min="0.5" step="0.5" value="2" placeholder="滚动时间"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all hover:btn-pulse">
-                            </label>
-                        </div>
-                        <div class="md:col-span-1">
-                            <label class="block text-gray-700 font-medium mb-2">
-                                字母抽签范围(A-Z):
-                                <input type="text" id="letterRange" placeholder="例如: A B C D E"
-                                    class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary transition-all uppercase hover:btn-pulse">
-                            </label>
+            <h1 class="text-[clamp(2.5rem,6vw,4rem)] font-black text-gray-800 mb-3 tracking-tight">
+                <span class="gradient-text">抽签开始打工！</span>
+            </h1>
+            <p class="text-gray-500 text-lg max-w-2xl mx-auto">公平、有趣、高效的随机抽签工具</p>
+        </header>
+
+        <!-- 三栏布局 -->
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 左侧：数字抽签记录 -->
+            <div class="lg:w-1/4 order-1">
+                <div class="glass-card rounded-3xl shadow-xl h-full p-6 sticky top-6 border border-white/50">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                                <i class="fa-solid fa-list-ol text-white"></i>
+                            </div>
+                            数字记录
+                        </h2>
+                        <span id="numberCount" class="px-3 py-1 bg-primary-100 text-primary-700 text-xs font-bold rounded-full">0</span>
+                    </div>
+                    <div id="records" class="space-y-3 max-h-[calc(100vh-280px)] overflow-y-auto pr-2">
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="fa-solid fa-inbox text-4xl mb-3 opacity-50"></i>
+                            <p class="text-sm">暂无记录</p>
                         </div>
                     </div>
-                    
-                    <div class="mt-4">
-                        <label class="flex items-center space-x-2 text-gray-700">
-                            <input type="checkbox" id="letterSwitch" class="form-checkbox h-5 w-5 text-primary">
-                            <span>启用字母抽签功能</span>
+                </div>
+            </div>
+
+            <!-- 中间：控制面板 -->
+            <div class="lg:w-1/2 order-2">
+                <!-- 设置卡片 -->
+                <div class="glass-card rounded-3xl shadow-xl p-6 mb-6 border border-white/50">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                            <i class="fa-solid fa-sliders text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800">抽签设置</h2>
+                            <p class="text-sm text-gray-500">配置您的抽签参数</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- 抽签人数 -->
+                        <div class="relative group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fa-solid fa-users mr-2 text-primary-500"></i>抽签人数
+                            </label>
+                            <div class="relative">
+                                <input type="number" id="peopleCount" min="1" value="" placeholder="输入人数"
+                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fa-solid fa-user-group"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 抽签次数 -->
+                        <div class="relative group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fa-solid fa-repeat mr-2 text-primary-500"></i>抽签次数
+                            </label>
+                            <div class="relative">
+                                <input type="number" id="drawCount" min="1" value="" placeholder="输入次数"
+                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fa-solid fa-hashtag"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 滚动时间 -->
+                        <div class="relative group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fa-solid fa-clock mr-2 text-secondary-500"></i>滚动时间(秒)
+                            </label>
+                            <div class="relative">
+                                <input type="number" id="rollTime" min="0.5" step="0.5" value="2" placeholder="滚动时间"
+                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-secondary-200/50 focus:border-secondary-500 transition-all text-lg font-semibold text-gray-800">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fa-solid fa-hourglass-half"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 字母范围 -->
+                        <div class="relative group">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                <i class="fa-solid fa-font mr-2 text-accent-500"></i>字母范围(A-Z)
+                            </label>
+                            <div class="relative">
+                                <input type="text" id="letterRange" placeholder="例如: A B C D E"
+                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-accent-200/50 focus:border-accent-500 transition-all text-lg font-semibold uppercase placeholder:normal-case text-gray-800 placeholder-gray-500">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    <i class="fa-solid fa-keyboard"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 字母开关 -->
+                    <div class="mt-6 p-4 bg-gradient-to-r from-accent-50 to-primary-50 rounded-2xl border border-accent-100">
+                        <label class="flex items-center cursor-pointer">
+                            <div class="relative">
+                                <input type="checkbox" id="letterSwitch" class="sr-only peer">
+                                <div class="w-14 h-8 bg-gray-300 peer-focus:ring-4 peer-focus:ring-accent-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-accent-500 shadow-inner"></div>
+                            </div>
+                            <div class="ml-4">
+                                <span class="text-base font-semibold text-gray-800">启用字母抽签</span>
+                                <p class="text-sm text-gray-500">切换为字母模式进行抽签</p>
+                            </div>
                         </label>
                     </div>
                 </div>
-                
-                <div class="mt-4 flex justify-center w-full flex-col items-center">
+
+                <!-- 抽签按钮区 -->
+                <div class="text-center">
                     <button id="drawBtn" 
-                        class="w-full px-8 py-6 md:px-10 md:py-8 bg-primary text-white rounded-lg shadow-lg transform transition-all duration-300 hover:bg-primary/90 active:scale-120 disabled:opacity-50 disabled:cursor-not-allowed text-3xl md:text-4xl"
-                        disabled
-                        title="点击按钮或按回车键开始抽签">
-                        开始抽签
+                        class="group relative w-full max-w-md mx-auto px-10 py-6 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 text-white rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-primary-500/50 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-2xl md:text-3xl font-black overflow-hidden"
+                        disabled>
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-3 group-hover:animate-bounce"></i>
+                            开始抽签
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 shimmer"></div>
                     </button>
-                    <p class="text-xs md:text-sm text-gray-500 mt-2 text-center max-w-xs">
-                        提示：回车键或点击按钮均可启动抽签
+                    <p class="mt-4 text-sm text-gray-500 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-keyboard text-primary-500"></i>
+                        按 <kbd class="px-2 py-1 bg-gray-200 rounded-lg text-xs font-mono">Enter</kbd> 键快速开始
                     </p>
-                    <div id="currentResult" 
-                        class="mt-4 text-2xl md:text-3xl font-bold text-primary text-center hidden 
-                              opacity-0 transition-all duration-500">
+                </div>
+
+                <!-- 当前结果 -->
+                <div id="currentResult" class="mt-6 text-center hidden">
+                    <div class="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-800 rounded-2xl text-xl font-bold">
+                        <i class="fa-solid fa-trophy mr-3 text-primary-600"></i>
+                        <span id="resultText"></span>
                     </div>
                 </div>
-                
-                <div id="result"
-                    class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                          text-[clamp(3rem,15vw,10rem)] font-bold text-primary 
-                          animate-letter-roll hidden z-30">
-                </div>
             </div>
-         
+
+            <!-- 右侧：字母抽签记录 -->
             <div class="lg:w-1/4 order-3">
-                <div class="bg-transparent backdrop-filter backdrop-blur-sm rounded-xl shadow-lg h-full p-6 sticky top-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4 border-b pb-2 flex items-center">
-                        <i class="fa fa-list mr-2 text-secondary"></i> 字母抽签记录
-                    </h2>
-                    <div id="letterRecords" class="space-y-4 max-h-[calc(100vh-300px)] overflow-y-auto">
+                <div class="glass-card rounded-3xl shadow-xl h-full p-6 sticky top-6 border border-white/50">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="text-lg font-bold text-gray-800 flex items-center">
+                            <div class="w-10 h-10 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+                                <i class="fa-solid fa-font text-white"></i>
+                            </div>
+                            字母记录
+                        </h2>
+                        <span id="letterCount" class="px-3 py-1 bg-secondary-100 text-secondary-700 text-xs font-bold rounded-full">0</span>
+                    </div>
+                    <div id="letterRecords" class="space-y-3 max-h-[calc(100vh-280px)] overflow-y-auto pr-2">
+                        <div class="text-center py-8 text-gray-400">
+                            <i class="fa-solid fa-font text-4xl mb-3 opacity-50"></i>
+                            <p class="text-sm">暂无记录</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
+        <!-- 结果显示 -->
+        <div id="result"
+            class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
+                   text-[clamp(4rem,12vw,10rem)] font-black text-primary
+                   animate-letter-roll hidden z-40 pointer-events-none select-none"
+            style="text-shadow: 0 0 60px rgba(16, 185, 129, 0.5), 0 0 120px rgba(16, 185, 129, 0.3);">
+        </div>
+
+        <!-- 结束页面 -->
         <div id="endMessage"
-            class="fixed inset-0 bg-white/90 flex items-center justify-center z-50 transform transition-all duration-500 opacity-0 pointer-events-none">
-            <div class="text-center">
-                <div class="text-[clamp(4rem,10vw,10rem)] font-bold text-secondary mb-4">娱乐结束</div>
-                <div class="text-[clamp(3rem,7vw,6rem)] text-gray-700">做回打工人的一天开始了！</div>
+            class="fixed inset-0 bg-gradient-to-br from-gray-900/95 to-gray-800/95 flex items-center justify-center z-50 transform transition-all duration-700 opacity-0 pointer-events-none backdrop-blur-xl">
+            <div class="text-center p-8 max-w-2xl mx-4">
+                <div class="mb-8">
+                    <div class="w-32 h-32 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl animate-bounce-slow">
+                        <i class="fa-solid fa-party-horn text-6xl text-white"></i>
+                    </div>
+                    <div class="text-[clamp(3rem,8vw,6rem)] font-black text-white mb-4" style="text-shadow: 0 0 40px rgba(249, 115, 22, 0.5);">
+                        娱乐结束
+                    </div>
+                    <p class="text-2xl md:text-3xl text-gray-300 font-light">
+                        做回打工人的一天开始了！
+                    </p>
+                </div>
                 <button id="restartBtn"
-                    class="mt-8 px-8 py-4 bg-primary text-white rounded-lg shadow-lg transform transition-all duration-300 hover:bg-primary/90 active:scale-95 text-xl md:text-3xl">
+                    class="group px-10 py-5 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-primary-500/50 active:scale-95 text-xl font-bold">
+                    <i class="fa-solid fa-rotate-right mr-3 group-hover:rotate-180 transition-transform duration-500"></i>
                     重新开始
                 </button>
             </div>
         </div>
     </div>
-    
+
+    <!-- Toast 提示 -->
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3"></div>
+
     <script>
         const STORAGE_KEY = 'drawUsageCount';
         const DATE_KEY = 'lastDrawDate';
         const END_PAGE_MARKER = 'endPageActive';
         const MAX_USAGE_PER_DAY = 3;
-        
-        const MUST_DRAW_SETTINGS = [
-  
-        ];
-        
+
         function getCurrentDate() {
             const date = new Date();
             return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
         }
-        
+
         function loadAccessState() {
             const currentDate = getCurrentDate();
             const savedDate = localStorage.getItem(DATE_KEY);
@@ -229,15 +418,13 @@
             
             return parseInt(savedCount || '0');
         }
-        
+
         function incrementUsageCount() {
             const currentDate = getCurrentDate();
             const savedCount = localStorage.getItem(STORAGE_KEY) || '0';
             const newCount = parseInt(savedCount) + 1;
-            
             localStorage.setItem(STORAGE_KEY, newCount.toString());
             localStorage.setItem(DATE_KEY, currentDate);
-            
             return newCount;
         }
 
@@ -256,7 +443,11 @@
         const rollingNumber = document.getElementById('rollingNumber');
         const networkErrorDiv = document.getElementById('networkError');
         const mainContent = document.querySelector('.container');
-        
+        const currentResult = document.getElementById('currentResult');
+        const resultText = document.getElementById('resultText');
+        const numberCount = document.getElementById('numberCount');
+        const letterCount = document.getElementById('letterCount');
+
         let remainingPeople = [];
         let currentRound = 1;
         let totalRounds = 1;
@@ -273,28 +464,47 @@
             if (usageCount >= MAX_USAGE_PER_DAY) {
                 networkErrorDiv.classList.remove('hidden');
                 mainContent.style.display = 'none';
-                document.querySelectorAll('.dynamic-layer').forEach(layer => layer.style.display = 'none');
                 return false;
             } else {
                 networkErrorDiv.classList.add('hidden');
                 mainContent.style.display = 'block';
-                document.querySelectorAll('.dynamic-layer').forEach(layer => layer.style.display = 'block');
                 return true;
             }
         }
 
-        function showToast(message) {
-            let toast = document.getElementById('toast');
-            if (!toast) {
-                toast = document.createElement('div');
-                toast.id = 'toast';
-                toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 opacity-0 transition-opacity duration-300';
-                document.body.appendChild(toast);
-            }
-            toast.textContent = message;
-            toast.style.opacity = '1';
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                warning: 'bg-yellow-500',
+                info: 'bg-blue-500'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.className = `${colors[type]} text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform transition-all duration-300 translate-y-10 opacity-0`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icons[type]} text-xl"></i>
+                <span class="font-semibold">${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-10', 'opacity-0');
+            });
+            
             setTimeout(() => {
-                toast.style.opacity = '0';
+                toast.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
@@ -303,24 +513,37 @@
             let uniqueLetters = [];
             const letters = this.value.split('').filter(c => c >= 'A' && c <= 'Z');
             letters.forEach(c => {
-                if (!uniqueLetters.includes(c)) uniqueLetters.push(c);
+                如果 (!uniqueLetters.包含(c)) uniqueLetters.推入(c);
             });
             this.value = uniqueLetters.join(' ');
         });
 
-        function updateDrawButtonState() {
+        函数 更新绘制按钮状态() {
             const peopleCount = parseInt(peopleCountInput.value);
             const drawCount = parseInt(drawCountInput.value);
             
             if (!isNaN(peopleCount) && peopleCount >= 1 && 
                 !isNaN(drawCount) && drawCount >= 1) {
                 drawBtn.disabled = false;
-                drawBtn.classList.add('btn-pulse');
-                return true;
+                drawBtn.classList.add('btn-pulse', 'animate-glow');
+                drawBtn.innerHTML = `
+                    <span class="relative z-10 flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-3 animate-bounce"></i>
+                        开始抽签
+                    </span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 shimmer"></div>
+                `;
+                返回 真;
             } else {
                 drawBtn.disabled = true;
-                drawBtn.classList.remove('btn-pulse');
-                return false;
+                drawBtn.classList.remove('btn-pulse', 'animate-glow');
+                drawBtn.innerHTML = `
+                    <span class="relative z-10 flex items-center justify-center">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-3"></i>
+                        开始抽签
+                    </span>
+                `;
+                返回 假;
             }
         }
 
@@ -342,12 +565,18 @@
             recordsDiv.innerHTML = '';
             letterRecordsDiv.innerHTML = '';
             endMessageDiv.classList.add('opacity-0', 'pointer-events-none');
-            drawBtn.textContent = '开始抽签';
+            drawBtn.innerHTML = `
+                <span class="relative z-10 flex items-center justify-center">
+                    <i class="fa-solid fa-wand-magic-sparkles mr-3 animate-bounce"></i>
+                    开始抽签
+                </span>
+            `;
             drawnLetters = [];
             hasReachedEnd = false;
             localStorage.removeItem(END_PAGE_MARKER);
+            updateCounts();
             
-            showToast(`已准备好 ${peopleCount} 人，共 ${rounds} 次抽签`);
+            showToast(`已准备好 ${peopleCount} 人，共 ${rounds} 次抽签`, 'success');
         }
 
         function performDraw() {
@@ -359,9 +588,10 @@
             
             isDrawing = true;
             drawBtn.disabled = true;
-            drawBtn.classList.remove('btn-pulse');
+            drawBtn.classList.remove('btn-pulse', 'animate-glow');
             rollingNumber.textContent = 0;
             numberDisplay.classList.remove('hidden');
+            currentResult.classList.add('hidden');
             startRolling();
         }
 
@@ -378,16 +608,7 @@
                     resultDiv.textContent = randomLetter;
                     rollingNumber.textContent = randomLetter;
                 } else {
-                    const mustDrawConfig = MUST_DRAW_SETTINGS.find(setting => setting.round === currentRound);
-                    let randomNumber;
-                    
-                    if (mustDrawConfig && remainingPeople.includes(mustDrawConfig.number)) {
-                        randomNumber = progress > 0.8 ? mustDrawConfig.number : 
-                                      remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
-                    } else {
-                        randomNumber = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
-                    }
-                    
+                    let randomNumber = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
                     resultDiv.textContent = randomNumber;
                     rollingNumber.textContent = randomNumber;
                 }
@@ -409,6 +630,9 @@
 
         function finalizeDraw() {
             resultDiv.classList.remove('animate-letter-roll');
+            void resultDiv.offsetWidth;
+            resultDiv.classList.add('animate-letter-roll');
+            
             if (remainingPeople.length === 0 || currentRound > totalRounds) {
                 endDraw();
                 return;
@@ -420,7 +644,7 @@
                 
                 if (availableLetters.length === 0) {
                     letterSwitch.checked = false;
-                    showToast('所有字母已抽取完毕，切换至数字抽签');
+                    showToast('所有字母已抽取完毕，切换至数字抽签', 'warning');
                     processNumberDraw();
                 } else {
                     const drawnLetter = getRandomLetter(availableLetters);
@@ -435,24 +659,23 @@
             }
             
             isDrawing = false;
-            if (currentRound <= totalRounds) {
+            如果 (当前轮次 <= 总轮次) {
                 drawBtn.disabled = false;
-                drawBtn.classList.add('btn-pulse');
-                drawBtn.textContent = `下一轮抽签 (剩余 ${totalRounds - currentRound + 1} 次)`;
+                drawBtn.classList.add('btn-pulse', 'animate-glow');
+                drawBtn.innerHTML = `
+                    <span class="relative z-10 flex items-center justify-center">
+                        <i class="fa-solid fa-play mr-3"></i>
+                        下一轮 (${totalRounds - currentRound + 1})
+                    </span>
+                `;
             } else {
                 endDraw();
             }
+            updateCounts();
         }
 
-        function processNumberDraw() {
-            const mustDrawConfig = MUST_DRAW_SETTINGS.find(setting => setting.round === currentRound);
-            let selectedPerson;
-            
-            if (mustDrawConfig && remainingPeople.includes(mustDrawConfig.number)) {
-                selectedPerson = mustDrawConfig.number;
-            } else {
-                selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
-            }
+        函数 processNumberDraw() {
+            let selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
             
             const selectedIndex = remainingPeople.indexOf(selectedPerson);
             if (selectedIndex > -1) {
@@ -463,32 +686,77 @@
             rollingNumber.textContent = selectedPerson;
             addNumberRecord(selectedPerson);
             currentRound++;
+            
+            // 显示当前结果
+            currentResult.classList.remove('hidden');
+            resultText.textContent = `抽中: ${selectedPerson}号`;
         }
 
         function addNumberRecord(number) {
             const recordItem = document.createElement('div');
-            recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
+            recordItem.className = 'record-item p-4 bg-gradient-to-r from-primary-50 to-white rounded-2xl border border-primary-100 shadow-sm';
             recordItem.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <div class="font-medium text-primary">第 ${currentRound} 轮</div>
-                    <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="px-3 py-1 bg-primary-500 text-white text-xs font-bold rounded-full">第${currentRound}轮</span>
+                    <span class="text-xs text-gray-400">${new Date().toLocaleTimeString()}</span>
                 </div>
-                <div class="text-2xl font-bold text-primary mt-1">${number}号</div>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-primary-400 to-primary-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg mr-3">
+                        ${number}
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold text-gray-800">${number}号</p>
+                        <p class="text-sm text-gray-500">恭喜中签！</p>
+                    </div>
+                </div>
             `;
             recordsDiv.prepend(recordItem);
+            
+            // 添加动画效果
+            recordItem.style.opacity = '0';
+            recordItem.style.transform = 'translateX(-20px)';
+            requestAnimationFrame(() => {
+                recordItem.style.transition = 'all 0.5s ease';
+                recordItem.style.opacity = '1';
+                recordItem.style.transform = 'translateX(0)';
+            });
         }
 
         function addLetterRecord(letter) {
             const recordItem = document.createElement('div');
-            recordItem.className = 'p-3 bg-gray-50 rounded-lg shadow-sm transform transition-all duration-300 hover:shadow-lg hover:translate-x-1';
+            recordItem.className = 'record-item p-4 bg-gradient-to-r from-secondary-50 to-white rounded-2xl border border-secondary-100 shadow-sm';
             recordItem.innerHTML = `
-                <div class="flex justify-between items-center">
-                    <div class="font-medium text-secondary">第 ${currentRound} 轮</div>
-                    <div class="text-xs text-gray-500">${new Date().toLocaleTimeString()}</div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="px-3 py-1 bg-secondary-500 text-white text-xs font-bold rounded-full">第${currentRound}轮</span>
+                    <span class="text-xs text-gray-400">${new Date().toLocaleTimeString()}</span>
                 </div>
-                <div class="text-2xl font-bold text-secondary mt-1">${letter}</div>
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-lg mr-3">
+                        ${letter}
+                    </div>
+                    <div>
+                        <p class="text-lg font-bold text-gray-800">字母 ${letter}</p>
+                        <p class="text-sm text-gray-500">恭喜中签！</p>
+                    </div>
+                </div>
             `;
             letterRecordsDiv.prepend(recordItem);
+            
+            // 添加动画效果
+            recordItem.style.opacity = '0';
+            recordItem.style.transform = 'translateX(-20px)';
+            requestAnimationFrame(() => {
+                recordItem.style.transition = 'all 0.5s ease';
+                recordItem.style.opacity = '1';
+                recordItem.style.transform = 'translateX(0)';
+            });
+        }
+
+        function updateCounts() {
+            const numberRecords = recordsDiv.querySelectorAll('.record-item').length;
+            const letterRecords = letterRecordsDiv.querySelectorAll('.record-item').length;
+            numberCount.textContent = numberRecords;
+            letterCount.textContent = letterRecords;
         }
 
         function endDraw() {
@@ -510,7 +778,7 @@
             window.location.reload();
         }
 
-        document.addEventListener('keydown', function(e) {
+        文档.addEventListener(‘keydown’, 函数(e) {
             if (e.key === 'Enter' && !drawBtn.disabled && !isDrawing) {
                 performDraw();
             }
@@ -522,7 +790,7 @@
                 usageCount = loadAccessState();
                 checkAccess();
                 
-                if (usageCount < MAX_USAGE_PER_DAY) {
+                如果 (usageCount < MAX_USAGE_PER_DAY) {
                     drawBtn.addEventListener('click', performDraw);
                     restartBtn.addEventListener('click', handleRestart);
                     updateDrawButtonState();
@@ -530,5 +798,5 @@
             }
         });
     </script>
-</body>
+</正文>
 </html>
