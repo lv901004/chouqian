@@ -142,6 +142,44 @@
                 transform: translateX(8px) scale(1.02);
                 box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
             }
+            input[type="number"]::-webkit-inner-spin-button,
+            input[type="number"]::-webkit-outer-spin-button {
+                -webkit-appearance: inner-spin-button !important;
+                opacity: 1;
+                position: absolute;
+                right: 2px;
+                top: 50%;
+                transform: translateY(-50%);
+                height: 60%;
+            }
+            input[type="number"] {
+                position: relative;
+            }
+            @keyframes heartbeat {
+                0%, 100% { transform: scale(1); }
+                14% { transform: scale(1.1); }
+                28% { transform: scale(1); }
+                42% { transform: scale(1.1); }
+                70% { transform: scale(1); }
+            }
+            .animate-heartbeat {
+                animation: heartbeat 1.5s ease-in-out infinite;
+            }
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+            @keyframes floatNumber {
+                0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(-5deg); }
+                25% { transform: translate(-50%, -50%) translateY(-20px) rotate(5deg); }
+                50% { transform: translate(-50%, -50%) translateY(0) rotate(-3deg); }
+                75% { transform: translate(-50%, -50%) translateY(-15px) rotate(3deg); }
+            }
+            .floating-result {
+                animation: floatNumber 3s ease-in-out infinite;
+                text-shadow: 0 0 60px rgba(16, 185, 129, 0.8), 0 0 120px rgba(16, 185, 129, 0.5);
+            }
         }
     </style>
 </head>
@@ -237,8 +275,9 @@
                             </label>
                             <div class="relative">
                                 <input type="number" id="peopleCount" min="1" value="" placeholder="输入人数"
-                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500">
-                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    class="w-full px-5 py-4 pr-12 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500"
+                                    style="-moz-appearance: textfield;">
+                                <div class="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                     <i class="fa-solid fa-user-group"></i>
                                 </div>
                             </div>
@@ -251,8 +290,9 @@
                             </label>
                             <div class="relative">
                                 <input type="number" id="drawCount" min="1" value="" placeholder="输入次数"
-                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500">
-                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    class="w-full px-5 py-4 pr-12 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-primary-200/50 focus:border-primary-500 transition-all text-lg font-semibold placeholder:font-normal text-gray-800 placeholder-gray-500"
+                                    style="-moz-appearance: textfield;">
+                                <div class="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                     <i class="fa-solid fa-hashtag"></i>
                                 </div>
                             </div>
@@ -265,8 +305,9 @@
                             </label>
                             <div class="relative">
                                 <input type="number" id="rollTime" min="0.5" step="0.5" value="2" placeholder="滚动时间"
-                                    class="w-full px-5 py-4 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-secondary-200/50 focus:border-secondary-500 transition-all text-lg font-semibold text-gray-800">
-                                <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                                    class="w-full px-5 py-4 pr-12 bg-white/55 border-2 border-white/65 rounded-2xl focus:ring-4 focus:ring-secondary-200/50 focus:border-secondary-500 transition-all text-lg font-semibold text-gray-800"
+                                    style="-moz-appearance: textfield;">
+                                <div class="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                                     <i class="fa-solid fa-hourglass-half"></i>
                                 </div>
                             </div>
@@ -302,7 +343,6 @@
                     </div>
                 </div>
 
-                <!-- 抽签按钮区 -->
                 <div class="text-center">
                     <button id="drawBtn" 
                         class="group relative w-full max-w-md mx-auto px-10 py-6 bg-gradient-to-r from-primary-500 via-primary-600 to-primary-500 text-white rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-primary-500/50 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-2xl md:text-3xl font-black overflow-hidden"
@@ -360,8 +400,8 @@
 
         <!-- 结束页面 -->
         <div id="endMessage"
-            class="fixed inset-0 bg-gradient-to-br from-gray-900/95 to-gray-800/95 flex items-center justify-center z-50 transform transition-all duration-700 opacity-0 pointer-events-none backdrop-blur-xl">
-            <div class="text-center p-8 max-w-2xl mx-4">
+            class="fixed inset-0 bg-gradient-to-br from-gray-900/25 to-gray-800/25 flex items-center justify-center z-50 transform transition-all duration-700 opacity-0 pointer-events-none backdrop-blur-sm">
+            <div class="text-center p-8 w-full px-4">
                 <div class="mb-8">
                     <div class="w-32 h-32 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-2xl animate-bounce-slow">
                         <i class="fa-solid fa-party-horn text-6xl text-white"></i>
@@ -369,7 +409,8 @@
                     <div class="text-[clamp(3rem,8vw,6rem)] font-black text-white mb-4" style="text-shadow: 0 0 40px rgba(249, 115, 22, 0.5);">
                         娱乐结束
                     </div>
-                    <p class="text-2xl md:text-3xl text-gray-300 font-light">
+                    <p class="text-[clamp(2rem,6vw,4rem)] font-black animate-heartbeat mt-6 mb-4"
+                       style="background: linear-gradient(45deg, #f97316, #e9b021, #f9163c); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; animation: heartbeat 1.5s ease-in-out infinite, gradientShift 3s ease infinite;">
                         做回打工人的一天开始了！
                     </p>
                 </div>
@@ -390,6 +431,9 @@
         const DATE_KEY = 'lastDrawDate';
         const END_PAGE_MARKER = 'endPageActive';
         const MAX_USAGE_PER_DAY = 3;
+        
+
+        const MUST_DRAW_SETTINGS = ['A:A'];
 
         function getCurrentDate() {
             const date = new Date();
@@ -508,17 +552,67 @@
             }, 3000);
         }
 
+        function showModal(title, message, type = 'info') {
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'fixed inset-0 bg-black/60 backdrop-blur-sm z-[9999] flex items-center justify-center p-4';
+            modalOverlay.id = 'customModal';
+            
+            const colors = {
+                success: 'border-green-500 text-green-600',
+                error: 'border-red-500 text-red-600',
+                warning: 'border-yellow-500 text-yellow-600',
+                info: 'border-blue-500 text-blue-600'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-times-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            modalOverlay.innerHTML = `
+                <div class="glass-card max-w-md w-full p-8 rounded-3xl shadow-2xl transform scale-95 opacity-0 transition-all duration-300" id="modalContent">
+                    <div class="text-center">
+                        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-white/50 flex items-center justify-center border-4 ${colors[type]}">
+                            <i class="fa-solid ${icons[type]} text-4xl ${colors[type].split(' ')[1]}"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">${title}</h3>
+                        <p class="text-gray-600 text-lg mb-8 whitespace-pre-line">${message}</p>
+                        <button onclick="closeModal()" class="px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-2xl font-bold text-lg hover:scale-105 transition-transform shadow-lg">
+                            我知道了
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modalOverlay);
+            
+            requestAnimationFrame(() => {
+                document.getElementById('modalContent').classList.remove('scale-95', 'opacity-0');
+            });
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('customModal');
+            if (modal) {
+                const content = document.getElementById('modalContent');
+                content.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => modal.remove(), 300);
+            }
+        }
+
         letterRangeInput.addEventListener('input', function(e) {
             this.value = this.value.toUpperCase();
             let uniqueLetters = [];
             const letters = this.value.split('').filter(c => c >= 'A' && c <= 'Z');
             letters.forEach(c => {
-                如果 (!uniqueLetters.包含(c)) uniqueLetters.推入(c);
+                if (!uniqueLetters.includes(c)) uniqueLetters.push(c);
             });
             this.value = uniqueLetters.join(' ');
         });
 
-        函数 更新绘制按钮状态() {
+        function updateDrawButtonState() {
             const peopleCount = parseInt(peopleCountInput.value);
             const drawCount = parseInt(drawCountInput.value);
             
@@ -533,7 +627,7 @@
                     </span>
                     <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 shimmer"></div>
                 `;
-                返回 真;
+                return true;
             } else {
                 drawBtn.disabled = true;
                 drawBtn.classList.remove('btn-pulse', 'animate-glow');
@@ -543,23 +637,31 @@
                         开始抽签
                     </span>
                 `;
-                返回 假;
+                return false;
             }
         }
 
         peopleCountInput.addEventListener('input', updateDrawButtonState);
         drawCountInput.addEventListener('input', updateDrawButtonState);
+        
+        updateDrawButtonState();
 
         function initDraw() {
-            if (!updateDrawButtonState()) {
-                return;
-            }
-            
             const peopleCount = parseInt(peopleCountInput.value);
             const rounds = parseInt(drawCountInput.value);
+            
+            if (isNaN(peopleCount) || peopleCount < 1 || isNaN(rounds) || rounds < 1) {
+                return false;
+            }
+            
+            if (rounds !== peopleCount) {
+                showModal('人数和次数不匹配', `抽签人数(${peopleCount})和抽签次数(${rounds})必须相同才能开始抽签。\n\n请修改后再试。`, 'warning');
+                return false;
+            }
+            
             rollDuration = (parseFloat(rollTimeInput.value) || 2) * 1000;
             
-            totalRounds = Math.min(rounds, peopleCount);
+            totalRounds = rounds;
             currentRound = 1;
             remainingPeople = Array.from({ length: peopleCount }, (_, i) => i + 1);
             recordsDiv.innerHTML = '';
@@ -577,13 +679,37 @@
             updateCounts();
             
             showToast(`已准备好 ${peopleCount} 人，共 ${rounds} 次抽签`, 'success');
+            return true;
         }
 
         function performDraw() {
             if (isDrawing) return;
             
+            if (drawBtn.disabled) {
+                showToast('请先输入有效的人数和次数', 'warning');
+                return;
+            }
+            
+            const peopleCount = parseInt(peopleCountInput.value);
+            const drawCount = parseInt(drawCountInput.value);
+            
+            if (isNaN(peopleCount) || peopleCount < 1) {
+                showToast('请输入有效的抽签人数', 'error');
+                peopleCountInput.focus();
+                return;
+            }
+            
+            if (isNaN(drawCount) || drawCount < 1) {
+                showToast('请输入有效的抽签次数', 'error');
+                drawCountInput.focus();
+                return;
+            }
+            
             if (currentRound === 1) {
-                initDraw();
+                if (!initDraw()) {
+                    isDrawing = false;
+                    return;
+                }
             }
             
             isDrawing = true;
@@ -647,7 +773,33 @@
                     showToast('所有字母已抽取完毕，切换至数字抽签', 'warning');
                     processNumberDraw();
                 } else {
-                    const drawnLetter = getRandomLetter(availableLetters);
+                    let drawnLetter;
+                    
+                    const mustDrawSetting = MUST_DRAW_SETTINGS.find(setting => {
+                        const [round, value] = setting.split(':');
+                        return parseInt(round) === currentRound;
+                    });
+                    
+                    const fixedRounds = MUST_DRAW_SETTINGS.map(setting => {
+                        const [round] = setting.split(':');
+                        return parseInt(round);
+                    });
+                    const maxFixedRound = Math.max(...fixedRounds, 0);
+                    if (maxFixedRound > totalRounds && currentRound === 1) {
+                        showToast(`固定抽签设置(${maxFixedRound}轮)超出总轮次(${totalRounds}轮)，超出部分将随机抽签`, 'warning');
+                    }
+                    
+                    if (mustDrawSetting && currentRound <= totalRounds) {
+                        const [, value] = mustDrawSetting.split(':');
+                        if (isNaN(parseInt(value))) {
+                            drawnLetter = value;
+                        } else {
+                            drawnLetter = getRandomLetter(availableLetters);
+                        }
+                    } else {
+                        drawnLetter = getRandomLetter(availableLetters);
+                    }
+                    
                     drawnLetters.push(drawnLetter);
                     resultDiv.textContent = drawnLetter;
                     rollingNumber.textContent = drawnLetter;
@@ -659,7 +811,7 @@
             }
             
             isDrawing = false;
-            如果 (当前轮次 <= 总轮次) {
+            if (currentRound <= totalRounds) {
                 drawBtn.disabled = false;
                 drawBtn.classList.add('btn-pulse', 'animate-glow');
                 drawBtn.innerHTML = `
@@ -674,8 +826,33 @@
             updateCounts();
         }
 
-        函数 processNumberDraw() {
-            let selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+        function processNumberDraw() {
+            let selectedPerson;
+            
+            const mustDrawSetting = MUST_DRAW_SETTINGS.find(setting => {
+                const [round, value] = setting.split(':');
+                return parseInt(round) === currentRound;
+            });
+            
+            const fixedRounds = MUST_DRAW_SETTINGS.map(setting => {
+                const [round] = setting.split(':');
+                返回 parseInt(四舍五入);
+            });
+            const 最大固定四舍五入 = Math.max(...固定四舍五入, 0);
+            如果 (maxFixedRound > totalRounds && currentRound === 1) {
+                showToast(`固定抽签设置(${maxFixedRound}轮)超出总轮次(${totalRounds}轮)，超出部分将随机抽签`, 'warning');
+            }
+            
+            if (mustDrawSetting && currentRound <= totalRounds) {
+                const [, value] = mustDrawSetting.split(':');
+                if (!isNaN(parseInt(value))) {
+                    selectedPerson = parseInt(value);
+                } else {
+                    selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+                }
+            } else {
+                selectedPerson = remainingPeople[Math.floor(Math.random() * remainingPeople.length)];
+            }
             
             const selectedIndex = remainingPeople.indexOf(selectedPerson);
             if (selectedIndex > -1) {
@@ -687,7 +864,6 @@
             addNumberRecord(selectedPerson);
             currentRound++;
             
-            // 显示当前结果
             currentResult.classList.remove('hidden');
             resultText.textContent = `抽中: ${selectedPerson}号`;
         }
@@ -712,7 +888,6 @@
             `;
             recordsDiv.prepend(recordItem);
             
-            // 添加动画效果
             recordItem.style.opacity = '0';
             recordItem.style.transform = 'translateX(-20px)';
             requestAnimationFrame(() => {
@@ -742,7 +917,6 @@
             `;
             letterRecordsDiv.prepend(recordItem);
             
-            // 添加动画效果
             recordItem.style.opacity = '0';
             recordItem.style.transform = 'translateX(-20px)';
             requestAnimationFrame(() => {
@@ -760,7 +934,12 @@
         }
 
         function endDraw() {
-            numberDisplay.classList.add('hidden');
+            numberDisplay.classList.remove('hidden');
+            const numberElement = document.getElementById('rollingNumber');
+            if (numberElement) {
+                numberElement.parentElement.classList.add('floating-result');
+            }
+            
             setTimeout(() => {
                 endMessageDiv.classList.remove('opacity-0', 'pointer-events-none');
                 endMessageDiv.classList.add('opacity-100');
@@ -771,6 +950,12 @@
         }
 
         function handleRestart() {
+            const numberElement = document.getElementById('rollingNumber');
+            if (numberElement) {
+                numberElement.parentElement.classList.remove('floating-result');
+            }
+            numberDisplay.classList.add('hidden');
+            
             if (hasReachedEnd) {
                 incrementUsageCount();
                 localStorage.removeItem(END_PAGE_MARKER);
@@ -778,25 +963,23 @@
             window.location.reload();
         }
 
-        文档.addEventListener(‘keydown’, 函数(e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !drawBtn.disabled && !isDrawing) {
                 performDraw();
             }
         });
 
+        drawBtn.addEventListener('click', performDraw);
+        restartBtn.addEventListener('click', handleRestart);
+        
         window.addEventListener('load', function() {
             if (!isPageLoaded) {
                 isPageLoaded = true;
                 usageCount = loadAccessState();
                 checkAccess();
-                
-                如果 (usageCount < MAX_USAGE_PER_DAY) {
-                    drawBtn.addEventListener('click', performDraw);
-                    restartBtn.addEventListener('click', handleRestart);
-                    updateDrawButtonState();
-                }
+                updateDrawButtonState();
             }
         });
     </script>
-</正文>
+</body>
 </html>
