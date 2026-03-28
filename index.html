@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -441,35 +442,43 @@
         }
 
         function loadAccessState() {
-            const currentDate = getCurrentDate();
-            const savedDate = localStorage.getItem(DATE_KEY);
-            let savedCount = localStorage.getItem(STORAGE_KEY);
-            
-            if (savedDate !== currentDate) {
-                localStorage.setItem(STORAGE_KEY, '0');
-                localStorage.setItem(DATE_KEY, currentDate);
-                savedCount = '0';
+            try {
+                const currentDate = getCurrentDate();
+                const savedDate = localStorage.getItem(DATE_KEY);
+                let savedCount = localStorage.getItem(STORAGE_KEY);
+                
+                if (savedDate !== currentDate) {
+                    localStorage.setItem(STORAGE_KEY, '0');
+                    localStorage.setItem(DATE_KEY, currentDate);
+                    savedCount = '0';
+                }
+                
+                const wasOnEndPage = localStorage.getItem(END_PAGE_MARKER) === 'true';
+                if (wasOnEndPage) {
+                    const currentCount = parseInt(savedCount || '0');
+                    const newCount = currentCount + 1;
+                    localStorage.setItem(STORAGE_KEY, newCount.toString());
+                    savedCount = newCount.toString();
+                    localStorage.removeItem(END_PAGE_MARKER);
+                }
+                
+                return parseInt(savedCount || '0');
+            } catch (e) {
+                return 0;
             }
-            
-            const wasOnEndPage = localStorage.getItem(END_PAGE_MARKER) === 'true';
-            if (wasOnEndPage) {
-                const currentCount = parseInt(savedCount || '0');
-                const newCount = currentCount + 1;
-                localStorage.setItem(STORAGE_KEY, newCount.toString());
-                savedCount = newCount.toString();
-                localStorage.removeItem(END_PAGE_MARKER);
-            }
-            
-            return parseInt(savedCount || '0');
         }
 
         function incrementUsageCount() {
-            const currentDate = getCurrentDate();
-            const savedCount = localStorage.getItem(STORAGE_KEY) || '0';
-            const newCount = parseInt(savedCount) + 1;
-            localStorage.setItem(STORAGE_KEY, newCount.toString());
-            localStorage.setItem(DATE_KEY, currentDate);
-            return newCount;
+            try {
+                const currentDate = getCurrentDate();
+                const savedCount = localStorage.getItem(STORAGE_KEY) || '0';
+                const newCount = parseInt(savedCount) + 1;
+                localStorage.setItem(STORAGE_KEY, newCount.toString());
+                localStorage.setItem(DATE_KEY, currentDate);
+                return newCount;
+            } catch (e) {
+                return 0;
+            }
         }
 
         const peopleCountInput = document.getElementById('peopleCount');
@@ -836,10 +845,10 @@
             
             const fixedRounds = MUST_DRAW_SETTINGS.map(setting => {
                 const [round] = setting.split(':');
-                返回 parseInt(四舍五入);
+                return parseInt(round);
             });
-            const 最大固定四舍五入 = Math.max(...固定四舍五入, 0);
-            如果 (maxFixedRound > totalRounds && currentRound === 1) {
+            const maxFixedRound = Math.max(...fixedRounds, 0);
+            if (maxFixedRound > totalRounds && currentRound === 1) {
                 showToast(`固定抽签设置(${maxFixedRound}轮)超出总轮次(${totalRounds}轮)，超出部分将随机抽签`, 'warning');
             }
             
@@ -944,7 +953,10 @@
                 endMessageDiv.classList.remove('opacity-0', 'pointer-events-none');
                 endMessageDiv.classList.add('opacity-100');
                 hasReachedEnd = true;
-                localStorage.setItem(END_PAGE_MARKER, 'true');
+                try {
+                    localStorage.setItem(END_PAGE_MARKER, 'true');
+                } catch (e) {
+                }
                 isDrawing = false;
             }, 500);
         }
@@ -958,7 +970,10 @@
             
             if (hasReachedEnd) {
                 incrementUsageCount();
-                localStorage.removeItem(END_PAGE_MARKER);
+                try {
+                    localStorage.removeItem(END_PAGE_MARKER);
+                } catch (e) {
+                }
             }
             window.location.reload();
         }
