@@ -184,10 +184,12 @@
     </style>
 </head>
 <body class="min-h-screen font-sans bg-gradient-to-br from-slate-50 via-white to-slate-100">
+    <!-- 背景图片层 - 保留用户原有的图片，完全原样显示 -->
     <div class="fixed inset-0 z-0">
         <div class="absolute inset-0 bg-[url('https://p2.ssl.qhimgs1.com/t049c545a18debeb67f.png')] bg-cover bg-center"></div>
     </div>
 
+    <!-- 网络错误提示 -->
     <div id="networkError" class="fixed inset-0 bg-gray-900/95 z-50 flex items-center justify-center hidden backdrop-blur-sm">
         <div class="text-center p-10 glass-card-dark rounded-3xl shadow-2xl max-w-md mx-4 transform scale-100 transition-transform">
             <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -199,6 +201,7 @@
         </div>
     </div>
 
+    <!-- 滚动数字显示层 - 置顶显示 -->
     <div class="dynamic-layer fixed inset-0 z-[9999] pointer-events-none">
         <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
             <div class="number-display text-[clamp(10rem,20vw,30rem)] font-black 
@@ -212,7 +215,9 @@
         </div>
     </div>
 
+    <!-- 主内容区 -->
     <div class="relative z-20 container mx-auto px-4 py-6 max-w-7xl">
+        <!-- 标题区 -->
         <header class="text-center mb-8">
             <div class="inline-flex items-center justify-center p-2 bg-white/60 backdrop-blur rounded-2xl shadow-lg mb-4">
                 <span class="px-4 py-2 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl text-sm font-semibold shadow-lg">
@@ -225,7 +230,9 @@
             <p class="text-gray-500 text-lg max-w-2xl mx-auto">公平、有趣、高效的随机抽签工具</p>
         </header>
 
+        <!-- 三栏布局 -->
         <div class="flex flex-col lg:flex-row gap-6">
+            <!-- 左侧：数字抽签记录 -->
             <div class="lg:w-1/4 order-1">
                 <div class="glass-card rounded-3xl shadow-xl h-full p-6 sticky top-6 border border-white/50">
                     <div class="flex items-center justify-between mb-5">
@@ -246,7 +253,9 @@
                 </div>
             </div>
 
+            <!-- 中间：控制面板 -->
             <div class="lg:w-1/2 order-2">
+                <!-- 设置卡片 -->
                 <div class="glass-card rounded-3xl shadow-xl p-6 mb-6 border border-white/50">
                     <div class="flex items-center mb-6">
                         <div class="w-12 h-12 bg-gradient-to-br from-secondary-400 to-secondary-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
@@ -259,6 +268,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- 抽签人数 -->
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fa-solid fa-users mr-2 text-primary-500"></i>抽签人数
@@ -273,6 +283,7 @@
                             </div>
                         </div>
 
+                        <!-- 抽签次数 -->
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fa-solid fa-repeat mr-2 text-primary-500"></i>抽签次数
@@ -287,6 +298,7 @@
                             </div>
                         </div>
 
+                        <!-- 滚动时间 -->
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fa-solid fa-clock mr-2 text-secondary-500"></i>滚动时间(秒)
@@ -301,6 +313,7 @@
                             </div>
                         </div>
 
+                        <!-- 字母范围 -->
                         <div class="relative group">
                             <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 <i class="fa-solid fa-font mr-2 text-accent-500"></i>字母范围(A-Z)
@@ -315,6 +328,7 @@
                         </div>
                     </div>
 
+                    <!-- 字母开关 -->
                     <div class="mt-6 p-4 bg-gradient-to-r from-accent-50 to-primary-50 rounded-2xl border border-accent-100">
                         <label class="flex items-center cursor-pointer">
                             <div class="relative">
@@ -345,6 +359,7 @@
                     </p>
                 </div>
 
+                <!-- 当前结果 -->
                 <div id="currentResult" class="mt-6 text-center hidden">
                     <div class="inline-flex items-center px-6 py-3 bg-primary-100 text-primary-800 rounded-2xl text-xl font-bold">
                         <i class="fa-solid fa-trophy mr-3 text-primary-600"></i>
@@ -353,6 +368,7 @@
                 </div>
             </div>
 
+            <!-- 右侧：字母抽签记录 -->
             <div class="lg:w-1/4 order-3">
                 <div class="glass-card rounded-3xl shadow-xl h-full p-6 sticky top-6 border border-white/50">
                     <div class="flex items-center justify-between mb-5">
@@ -374,13 +390,15 @@
             </div>
         </div>
 
+        <!-- 结果显示 -->
         <div id="result"
             class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
                    text-[clamp(4rem,12vw,10rem)] font-black text-primary
-                   animate-letter-roll hidden z-40 pointer-events-none select-none"动画字母滚动 隐藏 z-40 指针事件无 选择无
+                   animate-letter-roll hidden z-40 pointer-events-none select-none"
             style="text-shadow: 0 0 60px rgba(16, 185, 129, 0.5), 0 0 120px rgba(16, 185, 129, 0.3);">
         </div>
 
+        <!-- 结束页面 -->
         <div id="endMessage"
             class="fixed inset-0 bg-gradient-to-br from-gray-900/25 to-gray-800/25 flex items-center justify-center z-50 transform transition-all duration-700 opacity-0 pointer-events-none backdrop-blur-sm">
             <div class="text-center p-8 w-full px-4">
@@ -405,6 +423,7 @@
         </div>
     </div>
 
+    <!-- Toast 提示 -->
     <div id="toastContainer" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 space-y-3"></div>
 
     <script>
@@ -412,7 +431,9 @@
         const DATE_KEY = 'lastDrawDate';
         const END_PAGE_MARKER = 'endPageActive';
         const MAX_USAGE_PER_DAY = 3;
-        const MUST_DRAW_SETTINGS = ['1:4'];
+        
+
+        const MUST_DRAW_SETTINGS = ['A:A'];
 
         function getCurrentDate() {
             const date = new Date();
@@ -946,17 +967,17 @@
             }
             numberDisplay.classList.add('hidden');
             
-            if (hasReachedEnd) {如果 (已到达末尾) {
+            if (hasReachedEnd) {
                 incrementUsageCount();
                 try {
                     localStorage.removeItem(END_PAGE_MARKER);
                 } catch (e) {
                 }
             }
-            window.location.reload();窗口.位置.重新加载();
+            window.location.reload();
         }
 
-        document.addEventListener('keydown', function(e) {文档.添加事件监听器('keydown', 函数(e) {文档.addEventListener('keydown', function函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数函数(e) {文档.添加事件监听器('keydown', 函数(e) {
+        document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && !drawBtn.disabled && !isDrawing) {
                 performDraw();
             }
@@ -966,7 +987,7 @@
         restartBtn.addEventListener('click', handleRestart);
         
         window.addEventListener('load', function() {
-            if (!isPageLoaded) {如果 (!isPageLoaded) {
+            if (!isPageLoaded) {
                 isPageLoaded = true;
                 usageCount = loadAccessState();
                 checkAccess();
