@@ -434,11 +434,11 @@
         const MAX_USAGE_PER_DAY = 3;
         
 
-        const MUST_DRAW_SETTINGS = ['A:A'];
+        const MUST_DRAW_SETTINGS = ['1:4'];
 
         function getCurrentDate() {
             const date = new Date();
-            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;返回 `${date日期日期日期日期日期日期日期日期.getFullYear()}-${String字符串字符串字符串字符串字符串(date日期日期日期日期日期日期日期日期.getMonth() + 1).padStart(2, '0')}-${String字符串字符串字符串字符串字符串(date日期日期日期日期日期日期日期日期.getDate()).padStart(2, '0')}`;
         }
 
         function loadAccessState() {
@@ -447,7 +447,7 @@
                 const savedDate = localStorage.getItem(DATE_KEY);
                 let savedCount = localStorage.getItem(STORAGE_KEY);
                 
-                if (savedDate !== currentDate) {
+                if (savedDate !== currentDate) {如果 (savedDate !== currentDate) {
                     localStorage.setItem(STORAGE_KEY, '0');
                     localStorage.setItem(DATE_KEY, currentDate);
                     savedCount = '0';
